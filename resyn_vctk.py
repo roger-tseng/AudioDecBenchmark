@@ -10,14 +10,11 @@ def main(args):
         filepaths_48k = txt_file.readlines()
     # filepaths_48k = ["../VCTK-Corpus/wav48/p225/p225_001.wav"]
     
-    # Remove enclosing speaekr directory from list of strings of paths
-    filepaths_16k = map(lambda x: os.path.join(os.path.dirname(os.path.dirname(x)), os.path.basename(x)).replace("wav48", "16k"), filepaths_48k)
-    
-    for codec_name in list_codec():    
+    # Remove enclosing speaker directory from list of strings of paths
+    filepaths_16k = list(map(lambda x: os.path.join(os.path.dirname(os.path.dirname(x)), os.path.basename(x)).replace("wav48", "16k"), filepaths_48k))
+
+    for codec_name in list_codec():
         print(f"Synthesizing dataset with {codec_name}")
-        if 'funcodec' in codec_name:
-            print(f"Skipping FunCodec-based due to dependency issues...")
-            continue
 
         codec = load_codec(codec_name)
         codec_sr = codec.sampling_rate
